@@ -27,3 +27,4 @@ read -r user
 echo $user
 
 ssh -o ExitOnForwardFailure=yes -o ConnectTimeout=3 -o TCPKeepAlive=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=5 -N -R 8000:localhost:8000 $user@$ip
+netstat -anp | grep LISTEN | grep 8000
