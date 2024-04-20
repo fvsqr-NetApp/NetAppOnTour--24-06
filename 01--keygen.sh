@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 ssh-keygen -t ecdsa -q -f "$HOME/.ssh/id_ecdsa" -N "" > /dev/null
 
@@ -19,5 +19,5 @@ echo "Press any key, when done..."
 bash -c "read -r -n 1"
 echo
 echo "What's the IP of the SSH Proxy Server?"
-bash -c "read -r ip"
+read -r ip
 echo $ip
