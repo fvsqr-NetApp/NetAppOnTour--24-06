@@ -1,5 +1,5 @@
 #! /bin/sh
-ssh-keygen -t ecdsa -q -f "$HOME/.ssh/id_ecdsa" -N ""
+ssh-keygen -t ecdsa -q -f "$HOME/.ssh/id_ecdsa" -N "" > /dev/null
 
 
 echo .
