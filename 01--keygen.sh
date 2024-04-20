@@ -17,4 +17,4 @@ cat "$HOME/.ssh/id_ecdsa.pub"
 echo .
 echo .
 echo "Press any key, when done..."
-read -r -n 1
+bash -c "read -r -n 1"
