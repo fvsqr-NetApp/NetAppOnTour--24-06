@@ -21,3 +21,9 @@ echo
 echo "What's the IP of the SSH Proxy Server?"
 read -r ip
 echo $ip
+
+echo "What's the user name of the SSH Proxy Server?"
+read -r user
+echo $user
+
+ssh -o ExitOnForwardFailure=yes -o ConnectTimeout=3 -o TCPKeepAlive=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=5 -N -R 8000:localhost:8000 $user@1$ip
