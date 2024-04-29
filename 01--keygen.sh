@@ -43,7 +43,7 @@ deploy_tetris() {
   kubectl get nodes
 
   cd ~
-  git clone https://github.com/fvsqr-NetApp/tetris-gamev2.git tetris
+  git clone https://github.com/fvsqr-NetApp/tetris-gamev2.git tetris 2> /dev/null
   kubectl apply -f tetris/k8s
 }
 
