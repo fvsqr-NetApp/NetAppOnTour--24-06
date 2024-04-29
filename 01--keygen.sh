@@ -43,10 +43,11 @@ deploy_tetris() {
   export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
   echo $KUBECONFIG
   kubectl get nodes
+  kubectl create ns retrogames
 
   cd ~
   git clone https://github.com/fvsqr-NetApp/tetris-gamev2.git tetris 2> /dev/null
-  kubectl apply -f tetris/k8s
+  kubectl apply -f tetris/k8s -n retrogames
 }
 
 do_install() {
