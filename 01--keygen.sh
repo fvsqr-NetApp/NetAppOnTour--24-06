@@ -86,12 +86,12 @@ deploy_mines() {
 }
 
 proxy() {
-  apt update && apt install -Y nginx
+  apt update && apt install -y nginx
   echo "Tetris: $ip_tetris"
   echo "Mines: $ip_mines"
   echo "Nginx: $nginx_listen"
 
-  cat << EOF > /etc/nginx/nginx/conf.d/retrogames.conf
+  cat << EOF > /etc/nginx/conf.d/retrogames.conf
 server {
   listen       $nginx_listen;
 
