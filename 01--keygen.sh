@@ -33,7 +33,15 @@ do_install() {
   nohup bash -c "ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o ConnectTimeout=3 -o TCPKeepAlive=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=5 -N -R $remoteport:localhost:$localport $user@$ip" >/dev/null 2>&1 &
 
   sleep 4
-  lsof -i:ssh
+  lsof -i:ssh | grep $ip
+
+  established=$(lsof -i:ssh | awk -v p="$ip" '$0 ~ p')
+
+  if [ -z "$established" ]
+  then
+      echo "SSH Connection not established. Installation aborted!"
+      exit 1
+  fi
 }
 
 do_install
