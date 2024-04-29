@@ -1,4 +1,4 @@
-ort#!/bin/sh
+#!/bin/sh
 set -x
 
 ssh_key() {
