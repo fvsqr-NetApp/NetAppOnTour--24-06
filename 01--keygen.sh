@@ -63,6 +63,8 @@ do_install() {
   read -p "Local port to use: " localport < /dev/tty
   
   ssh_tunnel $ip $user $remoteport $localport
+  
+  deploy_tetris
 }
 
 do_install
