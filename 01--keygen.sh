@@ -131,8 +131,8 @@ do_install() {
   nginx_listen=$localport
   #ssh_tunnel $ip $user $remoteport $localport
   
-  #deploy_tetris
-  #deploy_mines
+  deploy_tetris
+  deploy_mines
   proxy
 }
 
