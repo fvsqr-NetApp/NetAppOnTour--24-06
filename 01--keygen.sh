@@ -1,7 +1,7 @@
 #!/bin/sh
 set -x
 
-do_install() {
+ssh_key() {
   ssh-keygen -t ecdsa -q -f "$HOME/.ssh/id_ecdsa" -N "" > /dev/null
   
   
@@ -17,18 +17,13 @@ do_install() {
   cat "$HOME/.ssh/id_ecdsa.pub"
   echo
   echo
-  read -p "Ready to continue? (Y/N): " confirm < /dev/tty
-  if [ "$confirm" != "${confirm#[Yy]}" ] ;then 
-    echo "ok, let's start the installation..."
-  else
-    echo "Installation aborted"
-    exit 1
-  fi
-  echo
-  read -p "IP of the SSH Proxy Server: " ip < /dev/tty
-  read -p "user name of the SSH Proxy Server: " user < /dev/tty
-  read -p "Remote port to use: " remoteport < /dev/tty
-  read -p "Local port to use: " localport < /dev/tty
+}
+
+ssh_tunnel() {
+  ip=$0
+  user=$1
+  remoteport=$2
+  localport=$3
   
   nohup bash -c "ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o ConnectTimeout=3 -o TCPKeepAlive=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=5 -N -R $remoteport:localhost:$localport $user@$ip" >/dev/null 2>&1 &
 
@@ -42,6 +37,24 @@ do_install() {
       echo "SSH Connection not established. Installation aborted!"
       exit 1
   fi
+}
+
+do_install() {
+  ssh_key
+  read -p "Ready to continue? (Y/N): " confirm < /dev/tty
+  if [ "$confirm" != "${confirm#[Yy]}" ] ;then 
+    echo "ok, let's start the installation..."
+  else
+    echo "Installation aborted"
+    exit 1
+  fi
+  echo
+  read -p "IP of the SSH Proxy Server: " ip < /dev/tty
+  read -p "user name of the SSH Proxy Server: " user < /dev/tty
+  read -p "Remote port to use: " remoteport < /dev/tty
+  read -p "Local port to use: " localport < /dev/tty
+  
+  ssh_tunnel $ip $user $remoteport $localport
 }
 
 do_install
