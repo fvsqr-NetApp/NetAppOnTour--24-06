@@ -136,21 +136,21 @@ EOF
 }
 
 do_install() {
-  #ssh_key
-  #read -p "Ready to continue? (Y/N): " confirm < /dev/tty
-  #if [ "$confirm" != "${confirm#[Yy]}" ] ;then 
-  #  echo "ok, let's start the installation..."
-  #else
-  #  echo "Installation aborted"
-  #  exit 1
-  #fi
-  #echo
-  #read -p "IP of the SSH Proxy Server: " ip < /dev/tty
-  #read -p "user name of the SSH Proxy Server: " user < /dev/tty
-  #read -p "Remote port to use: " remoteport < /dev/tty
-  #read -p "Local port to use: " localport < /dev/tty
-  #nginx_listen=$localport
-  #ssh_tunnel $ip $user $remoteport $localport
+  ssh_key
+  read -p "Ready to continue? (Y/N): " confirm < /dev/tty
+  if [ "$confirm" != "${confirm#[Yy]}" ] ;then 
+    echo "ok, let's start the installation..."
+  else
+    echo "Installation aborted"
+    exit 1
+  fi
+  echo
+  read -p "IP of the SSH Proxy Server: " ip < /dev/tty
+  read -p "user name of the SSH Proxy Server: " user < /dev/tty
+  read -p "Remote port to use: " remoteport < /dev/tty
+  read -p "Local port to use: " localport < /dev/tty
+  nginx_listen=$localport
+  ssh_tunnel $ip $user $remoteport $localport
   
   deploy_tetris
   deploy_mines
