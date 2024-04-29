@@ -44,7 +44,7 @@ deploy_tetris() {
   echo $KUBECONFIG
   namespace=retrogames
   kubectl get nodes
-  kubectl create ns $namespace
+  kubectl create ns $namespace > /dev/null
 
   cd /tmp
   git clone https://github.com/fvsqr-NetApp/tetris-gamev2.git tetris 2> /dev/null
@@ -54,6 +54,25 @@ deploy_tetris() {
   kubectl rollout status deployment tetris -n $namespace
 
   ip=$(kubectl get services --namespace $namespace nginx --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+  echo $ip
+}
+
+deploy mines() {
+  export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
+  echo $KUBECONFIG
+  namespace=retrogames
+  kubectl get nodes
+  kubectl create ns $namespace > /dev/null
+
+  cd /tmp
+  git clone https://github.com/fvsqr-NetApp/mines.git mines 2> /dev/null
+  cd mines && git pull
+  kubectl apply -f k8s -n $namespace
+
+  kubectl rollout status deployment mines -n $namespace
+
+  ip=$(kubectl get services --namespace $namespace mines --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
   echo $ip
 }
@@ -75,7 +94,8 @@ do_install() {
   
   #ssh_tunnel $ip $user $remoteport $localport
   
-  deploy_tetris
+  #deploy_tetris
+  deploy_mines
 }
 
 do_install
