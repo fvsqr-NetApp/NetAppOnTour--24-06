@@ -17,19 +17,17 @@ do_install() {
   cat "$HOME/.ssh/id_ecdsa.pub"
   echo
   echo
-  #read -p "Ready to continue? (Y/N): " confirm
-  #if [ "$confirm" != [Yy] ] ;then 
-  #  exit 1
-  #fi
+  read -p "Ready to continue? (Y/N): " confirm < /dev/tty
+  if [ "$confirm" != [Yy] ] ;then 
+    exit 1
+  fi
   echo
-  read -p "IP of the SSH Proxy Server: " ip
-  read -p "user name of the SSH Proxy Server: " user
+  read -p "IP of the SSH Proxy Server: " ip < /dev/tty
+  read -p "user name of the SSH Proxy Server: " user < /dev/tty
   
  # nohup bash -c "ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o ConnectTimeout=3 -o TCPKeepAlive=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=5 -N -R 8000:localhost:8000 $user@$ip" >/dev/null 2>&1 &
 
   #lsof -i tcp:8000
 }
 
-read -p "dsfafg2 " p1 < /dev/tty
-
-#do_install
+do_install
