@@ -39,6 +39,14 @@ ssh_tunnel() {
   fi
 }
 
+deploy_tetris() {
+  kubectl get nodes
+
+  cd ~
+  git clone https://github.com/fvsqr-NetApp/tetris-gamev2.git tetris
+  kubectl apply -f tetris/k8s
+}
+
 do_install() {
   ssh_key
   read -p "Ready to continue? (Y/N): " confirm < /dev/tty
