@@ -1,4 +1,4 @@
-#!/bin/sh
+ort#!/bin/sh
 set -x
 
 ssh_key() {
@@ -40,6 +40,7 @@ ssh_tunnel() {
 }
 
 deploy_tetris() {
+  export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
   echo $KUBECONFIG
   kubectl get nodes
 
