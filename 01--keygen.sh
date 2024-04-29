@@ -32,4 +32,4 @@ do_install() {
 
 read -p "dsfafg2 " p1
 
-do_install
+#do_install
