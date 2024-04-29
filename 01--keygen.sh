@@ -16,8 +16,8 @@ echo
 cat "$HOME/.ssh/id_ecdsa.pub"
 echo
 echo
+apt update && apt install -Y confirm 
 read -p "Ready to continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-bash -c "read -r -n 1"
 echo
 read -p "IP of the SSH Proxy Server: " ip
 read -p "user name of the SSH Proxy Server: " user
