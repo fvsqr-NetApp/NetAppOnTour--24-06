@@ -40,6 +40,7 @@ ssh_tunnel() {
 }
 
 deploy_tetris() {
+  echo $KUBECONFIG
   kubectl get nodes
 
   cd ~
