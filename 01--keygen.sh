@@ -30,6 +30,6 @@ do_install() {
   #lsof -i tcp:8000
 }
 
-read -p "dsfafg2 " p1
+read -p "dsfafg2 " p1 < /dev/tty
 
 #do_install
