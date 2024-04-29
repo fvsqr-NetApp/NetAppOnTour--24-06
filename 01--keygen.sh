@@ -19,13 +19,9 @@ do_install() {
   echo
   read -p "Ready to continue? (Y/N): " confirm < /dev/tty
   if [ "$confirm" != "${confirm#[Yy]}" ] ;then 
-    echo Yes
+    echo "ok, let's start the installation..."
   else
-    echo No
-  fi
-
-  read -p "Ready to continue? (Y/N): " confirm < /dev/tty
-  if [ "$confirm" != [Yy] ] ;then 
+    echo "Installation aborted"
     exit 1
   fi
   echo
