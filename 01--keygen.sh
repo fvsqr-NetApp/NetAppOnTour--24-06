@@ -45,7 +45,7 @@ deploy_tetris() {
   kubectl get nodes
   kubectl create ns retrogames
 
-  cd ~
+  cd /tmp
   git clone https://github.com/fvsqr-NetApp/tetris-gamev2.git tetris 2> /dev/null
   kubectl apply -f tetris/k8s -n retrogames
 }
