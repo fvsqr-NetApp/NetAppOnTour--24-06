@@ -20,10 +20,10 @@ ssh_key() {
 }
 
 ssh_tunnel() {
-  ip=$0
-  user=$1
-  remoteport=$2
-  localport=$3
+  ip=$1
+  user=$2
+  remoteport=$3
+  localport=$4
   
   nohup bash -c "ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o ConnectTimeout=3 -o TCPKeepAlive=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=5 -N -R $remoteport:localhost:$localport $user@$ip" >/dev/null 2>&1 &
 
