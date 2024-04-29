@@ -58,7 +58,7 @@ deploy_tetris() {
   echo $ip
 }
 
-deploy mines() {
+deploy_mines() {
   export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
   echo $KUBECONFIG
   namespace=retrogames
