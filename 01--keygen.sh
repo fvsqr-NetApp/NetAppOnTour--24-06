@@ -17,7 +17,7 @@ do_install() {
   cat "$HOME/.ssh/id_ecdsa.pub"
   echo
   echo
-  read -p "Ready to continue? (Y/N): " confirm && [ "$confirm" == [yY] ] || exit 1'
+  read -p "Ready to continue? (Y/N): " confirm && [ "$confirm" == [yY] ] || exit 1
   echo
   read -p "IP of the SSH Proxy Server: " ip
   read -p "user name of the SSH Proxy Server: " user
