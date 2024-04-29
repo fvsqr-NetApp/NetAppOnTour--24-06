@@ -1,6 +1,10 @@
 #!/bin/sh
 set -x
 
+nginx_listen=8000
+ip_mines=""
+ip_tetris=""
+
 ssh_key() {
   ssh-keygen -t ecdsa -q -f "$HOME/.ssh/id_ecdsa" -N "" > /dev/null
   
@@ -56,6 +60,8 @@ deploy_tetris() {
   ip=$(kubectl get services --namespace $namespace nginx --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
   echo $ip
+
+  ip_tetris=$ip
 }
 
 deploy_mines() {
@@ -75,6 +81,35 @@ deploy_mines() {
   ip=$(kubectl get services --namespace $namespace mines --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
   echo $ip
+
+  ip_mines=$ip
+}
+
+proxy() {
+  apt update && apt install -Y nginx
+  echo "Tetris: $ip_tetris"
+  echo "Mines: $ip_mines"
+  echo "Nginx: $nginx_listen"
+
+  cat << EOF > /etc/nginx/nginx/conf.d/retrogames.conf
+server {
+  listen       $nginx_listen;
+
+  location / {
+    proxy_pass http://$ip_mines:3300;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+}
+
+  location /tetris {
+    proxy_pass http://ip_tetris:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+  }
+}
+EOF
 }
 
 do_install() {
@@ -91,7 +126,7 @@ do_install() {
   #read -p "user name of the SSH Proxy Server: " user < /dev/tty
   #read -p "Remote port to use: " remoteport < /dev/tty
   #read -p "Local port to use: " localport < /dev/tty
-  
+  nginx_listen=$localport
   #ssh_tunnel $ip $user $remoteport $localport
   
   #deploy_tetris
