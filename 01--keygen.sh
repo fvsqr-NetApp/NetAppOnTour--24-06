@@ -18,6 +18,13 @@ do_install() {
   echo
   echo
   read -p "Ready to continue? (Y/N): " confirm < /dev/tty
+  if [ "$confirm" != "${confirm#[Yy]}" ] ;then 
+    echo Yes
+  else
+    echo No
+  fi
+
+  read -p "Ready to continue? (Y/N): " confirm < /dev/tty
   if [ "$confirm" != [Yy] ] ;then 
     exit 1
   fi
