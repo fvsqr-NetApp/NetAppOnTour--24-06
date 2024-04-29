@@ -52,6 +52,10 @@ deploy_tetris() {
   kubectl apply -f k8s -n $namespace
 
   kubectl rollout status deployment tetris -n $namespace
+
+  ip=$(kubectl get services --namespace $namespace nginx --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+  echo $ip
 }
 
 do_install() {
