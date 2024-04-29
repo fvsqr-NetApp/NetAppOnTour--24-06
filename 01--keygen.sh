@@ -103,7 +103,7 @@ server {
 }
 
   location /tetris {
-    proxy_pass http://ip_tetris:3000;
+    proxy_pass http://$ip_tetris:3000;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
@@ -128,7 +128,7 @@ do_install() {
   #read -p "user name of the SSH Proxy Server: " user < /dev/tty
   #read -p "Remote port to use: " remoteport < /dev/tty
   #read -p "Local port to use: " localport < /dev/tty
-  nginx_listen=$localport
+  #nginx_listen=$localport
   #ssh_tunnel $ip $user $remoteport $localport
   
   deploy_tetris
