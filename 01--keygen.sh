@@ -15,14 +15,11 @@ echo
 cat "$HOME/.ssh/id_ecdsa.pub"
 echo
 echo
-echo "Press any key, when done..."
+read -p "Ready to continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
 bash -c "read -r -n 1"
 echo
-echo "What's the IP of the SSH Proxy Server?"
-read -r ip
-
-echo "What's the user name of the SSH Proxy Server?"
-read -r user
+read -p "IP of the SSH Proxy Server: " ip
+read -p "user name of the SSH Proxy Server: " user
 
 bash -c "ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o ConnectTimeout=3 -o TCPKeepAlive=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=5 -N -R 8000:localhost:8000 $user@$ip" &> /dev/null & disown;
 lsof -i tcp:8000
