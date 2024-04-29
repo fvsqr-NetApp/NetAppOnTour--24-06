@@ -110,6 +110,8 @@ server {
   }
 }
 EOF
+
+  service nginx restart
 }
 
 do_install() {
@@ -130,7 +132,8 @@ do_install() {
   #ssh_tunnel $ip $user $remoteport $localport
   
   #deploy_tetris
-  deploy_mines
+  #deploy_mines
+  proxy
 }
 
 do_install
