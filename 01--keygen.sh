@@ -27,10 +27,11 @@ do_install() {
   echo
   read -p "IP of the SSH Proxy Server: " ip < /dev/tty
   read -p "user name of the SSH Proxy Server: " user < /dev/tty
+  read -p "Proxy port to use: " port < /dev/tty
   
-  nohup bash -c "ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o ConnectTimeout=3 -o TCPKeepAlive=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=5 -N -R 8000:localhost:8000 $user@$ip" >/dev/null 2>&1 &
+  nohup bash -c "ssh -o StrictHostKeyChecking=no -o ExitOnForwardFailure=yes -o ConnectTimeout=3 -o TCPKeepAlive=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=5 -N -R $port:localhost:$port $user@$ip" >/dev/null 2>&1 &
 
-  lsof -i tcp:8000
+  lsof -i:ssh
 }
 
 do_install
