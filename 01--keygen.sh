@@ -140,6 +140,8 @@ EOF
 copy_quotes() {
   apt update && apt install -y nfs-common
   mkdir -p /mnt/testdir
+
+  export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
  
   volume_name=$(kubectl get pvc -n $namespace | awk '{ print $3 }' | grep pvc | tr - _)
  
