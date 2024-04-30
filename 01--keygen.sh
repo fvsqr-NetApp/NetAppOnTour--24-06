@@ -135,6 +135,17 @@ EOF
   service nginx restart
 }
 
+copy_quotes() {
+  apt update && apt install -y nfs-common
+  mkdir -p /mnt/testdir
+ 
+  volume_name=$(kubectl get pvc -n tetris | awk '{ print $3 }' | grep pvc | tr - _)
+ 
+  mount -t nfs 192.168.0.131:/trident_$volume_name /mnt/testdir
+ 
+  cp -p /tmp/tetris/quotes/texts/* /mnt/testdir
+}
+
 do_install() {
   ssh_key
   read -p "Ready to continue? (Y/N): " confirm < /dev/tty
