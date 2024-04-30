@@ -1,6 +1,8 @@
 #!/bin/sh
 set -x
 
+namespace=retrogames
+
 nginx_listen=8000
 ip_mines=""
 ip_tetris=""
@@ -46,7 +48,7 @@ ssh_tunnel() {
 deploy_tetris() {
   export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
   echo $KUBECONFIG
-  namespace=retrogames
+  
   kubectl get nodes
   kubectl create ns $namespace > /dev/null
 
@@ -67,7 +69,7 @@ deploy_tetris() {
 deploy_mines() {
   export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
   echo $KUBECONFIG
-  namespace=retrogames
+
   kubectl get nodes
   kubectl create ns $namespace > /dev/null
 
@@ -139,7 +141,7 @@ copy_quotes() {
   apt update && apt install -y nfs-common
   mkdir -p /mnt/testdir
  
-  volume_name=$(kubectl get pvc -n tetris | awk '{ print $3 }' | grep pvc | tr - _)
+  volume_name=$(kubectl get pvc -n $namespace | awk '{ print $3 }' | grep pvc | tr - _)
  
   mount -t nfs 192.168.0.131:/trident_$volume_name /mnt/testdir
  
