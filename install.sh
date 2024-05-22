@@ -159,6 +159,17 @@ enable_arp_on_vol() {
   ssh -t cluster1 "vol modify -volume trident_$volume_name -anti-ransomware-state enabled"
 }
 
+snapshot_initial() {
+  snapshot_name=snap.initial
+  svm_name=svm1
+
+  export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
+ 
+  volume_name=$(kubectl get pvc -n $namespace | awk '{ print $3 }' | grep pvc | tr - _)
+  
+  ssh -t cluster1 "volume snapshot create -vserver $svm_name -volume trident_$volume_name -snapshot $snapshot_name"
+}
+
 do_install() {
   ssh_key
   read -p "Ready to continue? (Y/N): " confirm < /dev/tty
@@ -181,6 +192,7 @@ do_install() {
   proxy
   copy_quotes
   enable_arp_on_vol
+  snapshot_initial
 }
 
 do_install
