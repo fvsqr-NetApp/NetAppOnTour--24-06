@@ -151,6 +151,14 @@ copy_quotes() {
   cp -p /tmp/tetris/quotes/texts/* /mnt/testdir
 }
 
+enable_arp_on_vol() {
+  export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
+ 
+  volume_name=$(kubectl get pvc -n $namespace | awk '{ print $3 }' | grep pvc | tr - _)
+  
+  ssh -t cluster1 "vol modify -volume trident_$volume_name -anti-ransomware-state enabled"
+}
+
 do_install() {
   ssh_key
   read -p "Ready to continue? (Y/N): " confirm < /dev/tty
@@ -172,6 +180,7 @@ do_install() {
   deploy_mines
   proxy
   copy_quotes
+  enable_arp_on_vol
 }
 
 do_install
