@@ -143,6 +143,8 @@ copy_quotes() {
   export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
  
   volume_name=$(kubectl get pvc -n $namespace | awk '{ print $3 }' | grep pvc | tr - _)
+
+  echo "Trident volume name for apps: $volume_name" 
  
   mount -t nfs 192.168.0.131:/trident_$volume_name /mnt/testdir
  
