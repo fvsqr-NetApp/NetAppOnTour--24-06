@@ -136,12 +136,12 @@ EOF
   service nginx restart
 }
 
-copy_quotes() {
-  quotes_dir=/mnt/quotes
+copy_ads() {
+  ads_dir=/mnt/ads
 
   apt update && apt install -y nfs-common
   
-  mkdir -p $quotes_dir
+  mkdir -p $ads_dir
 
   export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
  
@@ -149,9 +149,9 @@ copy_quotes() {
 
   echo "Trident volume name for apps: $volume_name" 
  
-  mount -t nfs 192.168.0.131:/trident_$volume_name $quotes_dir
+  mount -t nfs 192.168.0.131:/trident_$volume_name $ads_dir
  
-  cp -p /tmp/tetris/quotes/texts/* $quotes_dir
+  cp -p /tmp/tetris/quotes/texts/* $ads_dir
 }
 
 enable_arp_on_vol() {
@@ -193,7 +193,7 @@ do_install() {
   deploy_tetris
   deploy_mines
   proxy
-  copy_quotes
+  copy_ads
   enable_arp_on_vol
   snapshot_initial
 }
