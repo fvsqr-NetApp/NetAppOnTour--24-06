@@ -155,11 +155,14 @@ copy_ads() {
 }
 
 enable_arp_on_vol() {
+  svm_name=svm1
+  
   export KUBECONFIG=/home/user/kubeconfigs/rke1/kube_config_cluster.yml
  
   volume_name=$(kubectl get pvc -n $namespace | awk '{ print $3 }' | grep pvc | tr - _)
   
-  ssh -t cluster1 "vol modify -volume trident_$volume_name -anti-ransomware-state enabled"
+  ssh -o StrictHostKeyChecking=no -t admin@cluster1.demo.netapp.com "vol modify -volume trident_$volume_name -anti-ransomware-state enabled"
+  ssh -o StrictHostKeyChecking=no -t admin@cluster1.demo.netapp.com "security anti-ransomware volume attack-detection-parameters modify -volume trident_$volume_name -vserver $svm_name -never-seen-before-file-extn-count-notify-threshold 1 -high-entropy-data-surge-notify-percentage 10 -file-create-rate-surge-notify-percentage 10 -file-delete-rate-surge-notify-percentage 10 -file-rename-rate-surge-notify-percentage 10"
 }
 
 snapshot_initial() {
@@ -170,7 +173,7 @@ snapshot_initial() {
  
   volume_name=$(kubectl get pvc -n $namespace | awk '{ print $3 }' | grep pvc | tr - _)
   
-  ssh -t cluster1 "volume snapshot create -vserver $svm_name -volume trident_$volume_name -snapshot $snapshot_name"
+  ssh -o StrictHostKeyChecking=no -t admin@cluster1.demo.netapp.com "volume snapshot create -vserver $svm_name -volume trident_$volume_name -snapshot $snapshot_name"
 }
 
 do_install() {
